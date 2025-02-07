@@ -1,3 +1,6 @@
+import os # 운영체제 모듈
+
+
 class User:
     name = ''
     id = ''
@@ -26,28 +29,40 @@ class Admin:
     admin_value = True
     error = 0
 
+class Reply:
+    reply_writer = ''
+    reply_detail = ''
+
 class Post:
     post_title = ''
     post_writer = ''
     post_detail = ''
+    # post_reply = Reply[]
+    
 
     def __init__(self,title,writer,detail):
         self.post_title = title
         self.post_writer = writer
         self.post_detail = detail
 
+def clearScreen(): # os 에 특화된 팁.
+    command = 'clear'
+    if os.name in ('nt', 'dos'):
+        command = 'cls'
 
-print('========================파이썬에 오신걸 환영합니다.===========================')
-user_list = []
-post_list = []
+    os.system(command)
+
+
 
 def adminMode_Service(service):
+    clearScreen() # 최초에 화면 클리어
     if service == '유저정보':
+        clearScreen() # 최초에 화면 클리어
         for user in user_list:
             print('====================================================')
-            print('이름: '+user.name)
-            print('아이디: '+user.id)
-            print('비밀번호: '+user.password)
+            print(f'이름 : {user.name}')
+            print(f'아이디 : {user.id}')
+            print(f'비밀번호 : {user.password}')
             print('====================================================')
 
         while True:
@@ -60,6 +75,7 @@ def adminMode_Service(service):
                 continue
 
     elif service == '조회수':
+        clearScreen() # 최초에 화면 클리어
         print('아직 정보가 없습니다.')
         
         while True:
@@ -73,6 +89,7 @@ def adminMode_Service(service):
 
     
 def adminMode():
+    clearScreen() # 최초에 화면 클리어
     admin_service = input('유저정보 | 조회수 | 뒤로가기 > ')
     if admin_service == '유저정보' or admin_service == '조회수':
         adminMode_Service(admin_service)
@@ -83,6 +100,7 @@ def adminMode():
         adminMode()
 
 def addPost(user, num):
+    clearScreen() # 최초에 화면 클리어    
     title = input('게시물 제목 : ')
     writer = user.name
     detail = input('내용 : ')
@@ -94,9 +112,40 @@ def addPost(user, num):
         userMode_Service('자유게시판', num)
     else:
         userMode_Service('자유게시판', num)
+
+def writeReply(num):
+    clearScreen() # 최초에 화면 클리어
+    curr_post = post_list[num]
+    while True:
+        reply = input('댓글을 입력하세요. (취소는 뒤로가기) > ')
+        if reply == '':
+            print('다시 입력하세요.')
+        elif reply == '뒤로가기':
+            showPost(num)
+        else:
+            curr_post.post_reply.append(reply)
+            showReply(num)
+
+def showReply(num):
+    curr_post = post_list[num]
+
+    if len(curr_post.post_reply) < 1:
+        print('현재 댓글이 없습니다.')
+    else:    
+        for reply in curr_post.post_reply:
+            print(f'ㄴ {reply}')
+
+    while True:
+        write_reply = input(' 댓글쓰기 | 뒤로가기 > ')
+        if write_reply == '댓글쓰기':
+            writeReply(num)
+        elif write_reply == '뒤로가기':
+            clearScreen() # 최초에 화면 클리어
+            showPost(num)
         
 
 def showPost(num):
+    clearScreen() # 최초에 화면 클리어
     curr_post = post_list[num]
     title = curr_post.post_title
     writer = curr_post.post_writer
@@ -104,17 +153,21 @@ def showPost(num):
 
     print(f'제목 : {title}')
     print(f'글쓴이 : {writer}')
+    print('=============================================')
     print(f'내용 : {detail}')
+    print('=============================================')
+    print(showReply(num))
     
 
-
 def userMode_Service(service, num):
+    clearScreen() # 최초에 화면 클리어    
     curr_user = user_list[num]
 
     if service == '개인정보':
-            print(f'이름: {curr_user.name}')
-            print(f'아이디: {curr_user.id}')
-            print(f'비밀번호: {curr_user.password}')
+            clearScreen() # 최초에 화면 클리어
+            print(f'이름 : {curr_user.name}')
+            print(f'아이디 : {curr_user.id}')
+            print(f'비밀번호 : {curr_user.password}')
             while True:
                 go_back = input('뒤로 가시겠습니까? (Y) > ').upper()
                 if go_back == 'Y':
@@ -124,6 +177,7 @@ def userMode_Service(service, num):
                     continue
 
     elif service == '유저리스트':
+        clearScreen() # 최초에 화면 클리어
         for user in user_list:
             print(user.name)
         while True:
@@ -136,6 +190,7 @@ def userMode_Service(service, num):
 
     elif service == '자유게시판':
         number = 0
+        clearScreen() # 최초에 화면 클리어
         for post in post_list:
             number += 1
             print(f'[{number}] {post.post_title}')
@@ -146,6 +201,7 @@ def userMode_Service(service, num):
             showPost(int(work)-1)
 
     elif service == '탈퇴':
+        clearScreen() # 최초에 화면 클리어
         while True:
                 answer = input('정말로 탈퇴 하시겠습니까? (Y) > ').upper()
                 if answer == 'Y':
@@ -167,13 +223,14 @@ def userMode_Service(service, num):
 
 
 def userMode(num):
+    clearScreen() # 최초에 화면 클리어
     print('=========================파이썬 홈페이지 입니다.===========================')
     mode = input('개인정보 | 유저리스트 | 자유게시판 | 탈퇴 | 뒤로가기 > ')
     userMode_Service(mode, num)
 
 
 def user_account(mode):
-
+    clearScreen() # 최초에 화면 클리어
     go_back = input('뒤로 가시겠습니까? (Y) > ').upper()
     if go_back == 'Y':
         selectLoginAccout()
@@ -187,7 +244,7 @@ def user_account(mode):
 
         for user in user_list:
             if user.id == id_input and user.password == pass_input:
-                print(user.name+'님. 환영합니다.')
+                print(f'{user.name}님. 환영합니다.')
                 userMode(user_num)
             else:
                 user_num += 1
@@ -216,6 +273,7 @@ def user_account(mode):
                     print('가입이 완료되었습니다')
                     info = User(name_info, id_info, pass_info)
                     user_list.append(info)
+                    input()
                     selectLoginAccout()
 
     elif mode == '뒤로가기':
@@ -223,6 +281,7 @@ def user_account(mode):
 
 
 def selectLoginAccout():
+    clearScreen() # 최초에 화면 클리어
     choice = input('로그인 | 회원가입 | 뒤로가기 > ')
     if choice == '로그인' or choice == '회원가입':
         user_account(choice)
@@ -235,6 +294,8 @@ def selectLoginAccout():
         selectLoginAccout()
 
 def main():
+    clearScreen() # 최초에 화면 클리어
+
     while True:
         mode = input('접속하실 모드를 입력 해주세요. ( 관리자 | 사용자 ) > ')
         if mode == '관리자':
@@ -262,4 +323,9 @@ def main():
         else:
             print('유효하지 않은 페이지 입니다.')
 
+print('========================파이썬에 오신걸 환영합니다.===========================')
+user_list = []
+post_list = []
+
 main()
+
