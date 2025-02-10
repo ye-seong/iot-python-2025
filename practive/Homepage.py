@@ -102,8 +102,9 @@ def LoadPostFromDB(items: list):
         title = lines[0]
         writer = lines[1]
         detail = lines[2]
+        reply = lines[3]
 
-        post = User(title,writer,detail)
+        post = Post(title,writer,detail, reply)
         post_list.append(post)
     f.close()
 
@@ -112,33 +113,19 @@ def adminMode_Service(service):
     if service == '유저정보':
         clearScreen() # 최초에 화면 클리어
         for user in user_list:
-            print('====================================================')
             print(f'이름 : {user.name}')
             print(f'아이디 : {user.id}')
             print(f'비밀번호 : {user.password}')
             print('====================================================')
 
-        while True:
-            go_back = input('뒤로 가시겠습니까? (Y) > ').upper()
-
-            if go_back == 'Y':
-                adminMode()
-                break
-            else:
-                continue
+        input()
 
     elif service == '조회수':
         clearScreen() # 최초에 화면 클리어
         print('아직 정보가 없습니다.')
         
-        while True:
-            go_back = input('뒤로 가시겠습니까? (Y) > ').upper()
-
-            if go_back == 'Y':
-                adminMode()
-                break
-            else:
-                continue
+        input()
+        adminMode()
 
     
 def adminMode():
@@ -150,6 +137,7 @@ def adminMode():
         main()
     else:
         print('다시 입력 해주세요.')
+        input()
         adminMode()
 
 def addPost(user, num):
@@ -178,7 +166,7 @@ def writeReply(num):
         elif reply == '뒤로가기':
             showPost(num)
         else:
-            curr_post.post_reply.append(reply)
+            curr_post.post_reply.reply_detail.append(reply)
             showReply(num)
 
 def showReply(num):
@@ -262,10 +250,14 @@ def userMode_Service(service, num):
                 if answer == 'Y':
                     del(user_list[num])
                     print('탈퇴 되었습니다.')
+                    input()
+                    clearScreen()
                     selectLoginAccout()
                     break
                 else:
                     print('탈퇴가 취소 되었습니다.')
+                    input()
+                    clearScreen()
                     userMode(num)
                     break
             
@@ -354,13 +346,11 @@ def main():
 
     while True:
         mode = input('접속하실 모드를 입력 해주세요. ( 관리자 | 사용자 ) > ')
+        clearScreen()
         if mode == '관리자':
             if Admin.admin_value == False:
                 print('비밀번호 3회 오류로 관리자 페이지에 접속 할 수가 없습니다.')
             while Admin.admin_value:
-                go_back = input('뒤로 가시겠습니까? (Y) > ').upper()
-                if go_back == 'Y':
-                    main()
                 admin_pass_input = input('관리자 비밀번호 > ')
                 if admin_pass_input == Admin.admin_pass:
                     print('관리자 모드에 접속 하셨습니다.')
@@ -373,6 +363,8 @@ def main():
                         break
                     else:
                         print(f'비밀번호가 맞지 않습니다. (오류 {Admin.error}회. 3회 오류시 닫힙니다.)')
+                        input()
+                        main()
         elif mode == '사용자':
             selectLoginAccout()
             
