@@ -37,13 +37,14 @@ class Post:
     post_title = ''
     post_writer = ''
     post_detail = ''
-    # post_reply = Reply[]
+    post_reply = []
     
 
-    def __init__(self,title,writer,detail):
+    def __init__(self,title,writer,detail, reply):
         self.post_title = title
         self.post_writer = writer
         self.post_detail = detail
+        self.post_reply = reply
 
 def clearScreen(): # os 에 특화된 팁.
     command = 'clear'
@@ -53,6 +54,58 @@ def clearScreen(): # os 에 특화된 팁.
     os.system(command)
 
 
+def addToUserDB(items: list):
+    f = open('user_db.txt', encoding='utf-8', mode='w')
+    for item in items:
+        f.write(f'{item.name}|')
+        f.write(f'{item.id}|')
+        f.write(f'{item.password}\n')
+
+    f.close()
+
+
+def addToPostDB(items: list):
+    f = open('post_db.txt', encoding='utf-8', mode='w')
+    for item in items:
+        f.write(f'{item.post_title}|')
+        f.write(f'{item.post_writer}|')
+        f.write(f'{item.post_detail}|')
+        f.write(f'{item.post_reply}')
+
+    f.close()
+
+def LoadUserFromDB(items: list):
+    f = open('user_db.txt', encoding='utf-8', mode='r')
+    
+    while True:
+        line = f.readline().replace('\n', '')
+        if not line: break
+        
+        lines = line.split('|')
+        name = lines[0]
+        id = lines[1]
+        password = lines[2]
+
+        user = User(name,id,password)
+        user_list.append(user)
+    f.close()
+
+
+def LoadPostFromDB(items: list):
+    f = open('post_db.txt', encoding='utf-8', mode='r')
+
+    while True:
+        line = f.readline().replace('\n', '')
+        if not line: break
+        
+        lines = line.split('|')
+        title = lines[0]
+        writer = lines[1]
+        detail = lines[2]
+
+        post = User(title,writer,detail)
+        post_list.append(post)
+    f.close()
 
 def adminMode_Service(service):
     clearScreen() # 최초에 화면 클리어
@@ -104,11 +157,13 @@ def addPost(user, num):
     title = input('게시물 제목 : ')
     writer = user.name
     detail = input('내용 : ')
+    reply = []
 
     save = input('저장하시려면 save를 입력해주세요. 원하지 않을시 엔터를 쳐주세요. : ')
     if save == 'save':
-        post_info = Post(title,writer,detail)
+        post_info = Post(title,writer,detail,reply)
         post_list.append(post_info)
+        addToPostDB(post_list)
         userMode_Service('자유게시판', num)
     else:
         userMode_Service('자유게시판', num)
@@ -273,6 +328,7 @@ def user_account(mode):
                     print('가입이 완료되었습니다')
                     info = User(name_info, id_info, pass_info)
                     user_list.append(info)
+                    addToUserDB(user_list)
                     input()
                     selectLoginAccout()
 
@@ -326,6 +382,10 @@ def main():
 print('========================파이썬에 오신걸 환영합니다.===========================')
 user_list = []
 post_list = []
+
+LoadUserFromDB(user_list)
+LoadPostFromDB(post_list)
+
 
 main()
 
