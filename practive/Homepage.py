@@ -118,14 +118,12 @@ def adminMode_Service(service):
             print(f'비밀번호 : {user.password}')
             print('====================================================')
 
-        input()
-
     elif service == '조회수':
         clearScreen() # 최초에 화면 클리어
         print('아직 정보가 없습니다.')
-        
-        input()
-        adminMode()
+
+    input()
+    adminMode()
 
     
 def adminMode():
@@ -278,9 +276,6 @@ def userMode(num):
 
 def user_account(mode):
     clearScreen() # 최초에 화면 클리어
-    go_back = input('뒤로 가시겠습니까? (Y) > ').upper()
-    if go_back == 'Y':
-        selectLoginAccout()
     
     if mode == '로그인':
         print('=========================로그인 페이지 입니다.===========================')
@@ -297,7 +292,7 @@ def user_account(mode):
                 user_num += 1
                 if user_num == len(user_list):
                     print('아이디 및 비밀번호를 다시 확인해주세요.')
-                    user_account('로그인')
+                    selectLoginAccout()
 
     elif mode == '회원가입':
         print('=========================회원가입 페이지 입니다.===========================')
@@ -315,14 +310,16 @@ def user_account(mode):
 
             if name_info == '' or id_info == '' or pass_info == '':
                 print('다시 입력 해주세요.')
+
             else:
                 if check == False:
                     print('가입이 완료되었습니다')
                     info = User(name_info, id_info, pass_info)
                     user_list.append(info)
                     addToUserDB(user_list)
-                    input()
-                    selectLoginAccout()
+            
+            input()
+            selectLoginAccout()
 
     elif mode == '뒤로가기':
         selectLoginAccout()
@@ -339,7 +336,9 @@ def selectLoginAccout():
 
     else:
         print('다시 입력 해주세요.')
-        selectLoginAccout()
+
+    input()
+    main()
 
 def main():
     clearScreen() # 최초에 화면 클리어
