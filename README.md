@@ -140,7 +140,10 @@ IoT 개발자 기초 프로그래밍 언어 리포지토리
             - 화면편집 : 검색이나 출력시 데이터 수 표시
          
 
-https://github.com/user-attachments/assets/18af6e6c-a20f-40fe-aa58-bc246012798d
+
+https://github.com/user-attachments/assets/3d56b3a3-6291-402c-a6c6-5f9ee25951ed
+
+
 
 - 파이썬 응용
     - 주피터 노트북 기본사용법
@@ -197,6 +200,16 @@ https://github.com/user-attachments/assets/18af6e6c-a20f-40fe-aa58-bc246012798d
         - ChatGPT 유사앱 - 구글 제미나이 API
     - 실습
         - 제미나이 챗앱 -> **클래스형태**로 변경
+
+
+
+
+
+https://github.com/user-attachments/assets/9ffa043f-e347-47be-b1fb-bf32a9b218d5
+
+
+
+
 
 - 파이썬 응용
     - 실행파일 만들기
