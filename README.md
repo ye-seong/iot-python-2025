@@ -229,3 +229,8 @@ https://github.com/user-attachments/assets/9ffa043f-e347-47be-b1fb-bf32a9b218d5
         - 간단한 게임
         - 이미지, 사운드 등 리소스 활용 게임
 
+    - 토이프로젝트
+        - 블록깨기 게임
+
+<img src="./image/py004.gif" width='700" height="450">
+
