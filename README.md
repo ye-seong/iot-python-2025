@@ -221,3 +221,11 @@ https://github.com/user-attachments/assets/9ffa043f-e347-47be-b1fb-bf32a9b218d5
             - > pyinstaller --onefile --noconsole 파이썬파일명
             - 아이콘 등의 리소스를 dist 폴더에 복사필요
 
+## 8일차
+- 파이썬 응용
+    - GUI 중 PyGame
+        - 기본 윈도우 학습
+        - 이벤트 처리
+        - 간단한 게임
+        - 이미지, 사운드 등 리소스 활용 게임
+
