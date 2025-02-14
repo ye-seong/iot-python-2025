@@ -62,7 +62,7 @@ class window(Tk):
 
                 self.textResult.insert(END, '챗봇: ', 'bold')
                 self.textResult.insert(END, f'{self.response}\n\n', 'ai')
-            except Exception as e:
+            except Exception as e:                                                                                                            
                 self.textResult.insert(END, f'Error: {str(e)}\n\n', 'error')
             finally:
                 self.textResult.see(END)
