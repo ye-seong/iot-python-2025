@@ -1,30 +1,54 @@
 from tkinter import * 
 from tkinter.messagebox import *
 import Homepage_code as w
+import tkinter as tk
 
-class Homepage(Tk):
+class Homepage(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('홈페이지')
         self.geometry('1000x700')
 
-        self.frame1 = Tk.frame(self)
-        entry = Entry(self)
-        Label(entry, text="메인화면").pack(pady=20)
-        Button(entry, text="다음화면", command=self.show_frame2).pack()
-        entry.pack()
+        self.mainF = tk.Frame(self)
+        Label(self.mainF, text="모드를 선택하세요.").pack(pady=20)
+        Button(self.mainF, text="관리자", command=self.show_adminF).pack()
+        Button(self.mainF, text="사용자", command=self.show_userF).pack()
+        self.mainF.pack()
 
-        self.frame2 = Tk.frame(self)
-        Label(entry, text="두번째화면").pack(pady=20)
-        Button(entry, text="이전화면", command=self.show_frame1).pack()
+        self.adminF = tk.Frame(self)
+        Label(self.adminF, text="관리자 비밀번호를 입력하세요.").pack(pady=20)
+        admin_entry = Entry(self)
+        admin_entry.pack()
+        Button(self.adminF, text="로그인", command=self.show_adminmodeF(admin_entry.get())).pack()
 
-    def show_frame1(self):
-        self.frame2.pack_forget()
-        self.frame1.pack()
+        self.adminmodeF = tk.Frame(self)
+        Label(self.adminmodeF, text="관리자 화면 입니다.").pack(pady=20)
+        # Button(self.adminmodeF,text="")
+        
+        self.userF = tk.Frame(self)
+        Label(self.userF, text="사용자 화면 입니다.").pack(pady=20)
+        Button(self.userF, text="사용자", command=self.show_mainF).pack()
 
-    def show_frame2(self):
-        self.frame1.pack_forget()
-        self.frame2.pack()
+    def show_mainF(self):
+        self.adminF.pack_forget()
+        self.mainF.pack()
+
+    def show_adminF(self):
+        self.mainF.pack_forget()
+        self.adminF.pack()
+
+    def show_userF(self):
+        self.mainF.pack_forget()
+        self.userF.pack()
+
+    def show_adminmodeF(self, password):
+        self.adminF.pack_forget()
+        self.adminmodeF.pack()
+        # if w.AdminPass(password):
+            
+        # else:
+        #     # showinfo('위젯', '비밀번호가 틀렸습니다!')
+        #     pass
 
 if __name__=="__main__":
     homepage = Homepage()

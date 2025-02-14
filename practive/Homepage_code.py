@@ -61,6 +61,6 @@ def AdminMode():
         
 def AdminPass(password):
     if password == h.Admin.admin_pass:
-        print('관리자 모드')
+        return True
     else:
-        print('비밀번호오류')
+        return False
