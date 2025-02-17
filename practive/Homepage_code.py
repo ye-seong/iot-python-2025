@@ -50,17 +50,15 @@ def LoadPostFromDB(items: list):
         post = h.Post(writer, title, detail, reply)
         h.post_list.append(post)
     f.close()
-
-def AdminMode():
-    if h.Admin.admin_value == False:
-        print('접속불가')
-        return False
-    else:
-        print('비밀번호 입력')
-        return True
         
 def AdminPass(password):
     if password == h.Admin.admin_pass:
         return True
     else:
+        h.Admin.error_num += 1
+        if (h.Admin.error_num >= 4): h.Admin.admin_value = False
         return False
+    
+def UserAccount():
+    pass
+    
