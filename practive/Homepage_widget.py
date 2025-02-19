@@ -13,6 +13,7 @@ class Homepage(tk.Tk):
         self.mainF = tk.Frame(self)
         self.adminF = tk.Frame(self)
         self.userF = tk.Frame(self)
+        self.accF = tk.Frame(self)
         self.adminmodeF = tk.Frame(self)
         
         # 메인화면 출력
@@ -26,15 +27,15 @@ class Homepage(tk.Tk):
 
         # 사용자화면 위젯
         self.userLabel = Label(self.userF, text="사용자 화면 입니다.")
-        self.userBtn1 = Button(self.userF, text="회원가입", command=self.show_mainF)
+        self.userBtn1 = Button(self.userF, text="회원가입", command=self.show_accF)
         self.userBtn2 = Button(self.userF, text="로그인", command=self.UserLogin)
 
         # 회원가입화면 위젯
-        self.accLabel = Label(self.userF, text="회원가입 화면 입니다.")
+        self.accLabel = Label(self.accF, text="회원가입 화면 입니다.")
         self.accName = Entry(self)
         self.accId = Entry(self)
         self.accPass = Entry(self)
-        self.accBtn = Button(self.userF, text="회원가입", command=self.UserLogin)
+        self.accBtn = Button(self.accF, text="회원가입", command=self.UserAcc)
 
         # 로그인화면 위젯
 
@@ -54,10 +55,28 @@ class Homepage(tk.Tk):
         if w.AdminPass(password):
             pass
         else:
-            if w.h.Admin.admin_value:
-                showerror('위젯', f'비밀번호를 다시 입력해주세요. ({w.h.Admin.error_num}회 오류)') 
+            if w.Admin.admin_value:
+                showerror('위젯', f'비밀번호를 다시 입력해주세요. ({w.Admin.error_num}회 오류)') 
             else:
                 showerror('위젯', f'비밀번호 3회 오류로 접속하실 수 없습니다.')             
+
+    def UserAcc(self):
+        name = self.accName.get()
+        id = self.accId.get()
+        password = self.accPass.get()
+
+        result = w.UserAccount(name, id, password)
+
+        if result == "success":
+            showinfo('위젯', '회원가입이 완료 되었습니다.')            
+        elif result == "name_error":
+            showerror('위젯', '같은 이름이 있습니다.')
+        elif result == "id_error":
+            showerror('위젯', '같은 아이디가 있습니다.')
+        else:
+            showerror('위젯', '다시 입력 해주세요.')             
+
+
 
     def UserLogin(self):
         pass
@@ -74,6 +93,13 @@ class Homepage(tk.Tk):
         self.userLabel.pack(pady=20)
         self.userBtn1.pack()
         self.userBtn2.pack()
+
+    def pack_accF(self):
+        self.accLabel.pack()
+        self.accName.pack()
+        self.accId.pack()
+        self.accPass.pack()
+        self.accBtn.pack()
 
     def show_mainF(self):
         self.adminF.pack_forget()
@@ -92,12 +118,18 @@ class Homepage(tk.Tk):
         self.userF.pack()
         self.pack_userF()
 
+    def show_accF(self):
+        self.userF.pack_forget()
+        self.accF.pack()
+        self.pack_accF()
+
     def show_adminmodeF(self, password):
         self.adminF.pack_forget()
         self.adminmodeF.pack()
 
 if __name__=="__main__":
     homepage = Homepage()
+    w.LoadUserFromDB(w.user_list)
     homepage.mainloop()
 
 

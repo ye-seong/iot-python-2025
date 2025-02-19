@@ -1,5 +1,41 @@
-import Homepage_module as h
+class Admin:
+    admin_pass = '1234'
+    admin_value = True
+    error_num = 0
 
+class User:
+    name = ''
+    id = ''
+    password = ''
+
+    def __init__(self, name, id, password):
+        self.name = name
+        self.id = id
+        self.password = password
+
+class Post:
+    post_writer = ''
+    post_title = ''
+    post_detail = ''
+    post_reply = []
+
+    def __init__(self, writer, title, detail, reply):
+        self.post_writer = writer
+        self.post_title = title
+        self.post_detail = detail
+        self.post_reply = reply
+
+class Reply:
+    reply_writer = ''
+    reply_detail = ''
+
+    def __init__(self, writer, detail):
+        self.reply_writer = writer
+        self.reply_detail = detail
+
+user_list=[]
+post_list=[]
+    
 def addToUserDB(items: list):
     f = open('user_db.txt', encoding='utf-8', mode='w')
     for item in items:
@@ -22,7 +58,7 @@ def addToPostDB(items: list):
 def LoadUserFromDB(items: list):
     f = open('user_db.txt', encoding='utf-8', mode='r')
     while True:
-        line = f.readline().replay('\n', '')
+        line = f.readline().replace('\n', '')
         if not line: break
         
         lines = line.split('|')
@@ -30,8 +66,8 @@ def LoadUserFromDB(items: list):
         id = lines[1]
         password = lines[2]
 
-        user = h.User(name, id, password)
-        h.user_list.append(user)
+        user = User(name, id, password)
+        user_list.append(user)
     
     f.close()
 
@@ -47,18 +83,30 @@ def LoadPostFromDB(items: list):
         detail = lines[2]
         reply = lines[3]
 
-        post = h.Post(writer, title, detail, reply)
-        h.post_list.append(post)
+        post = Post(writer, title, detail, reply)
+        post_list.append(post)
     f.close()
         
 def AdminPass(password):
-    if password == h.Admin.admin_pass:
+    if password == Admin.admin_pass:
         return True
     else:
-        h.Admin.error_num += 1
-        if (h.Admin.error_num >= 4): h.Admin.admin_value = False
+        Admin.error_num += 1
+        if (Admin.error_num >= 4): Admin.admin_value = False
         return False
     
-def UserAccount():
-    pass
+def UserAccount(name, id, password):
+    if name != '' and id != '' and password != '':
+        for user in user_list:
+            if user.name == name:
+                return "name_error"
+            elif user.id == id:
+                return "id_error"
+        info=User(name, id, password)
+        user_list.append(info)
+        addToUserDB(user_list)
+        return "success"
+    else:
+        return "empty_error"
+        
     
