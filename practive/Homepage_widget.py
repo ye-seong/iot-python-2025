@@ -8,13 +8,18 @@ class Homepage(tk.Tk):
         super().__init__()
         self.title('홈페이지')
         self.geometry('1000x700')
+        self.curr_user = ""
+
 
         # 프레임 미리 생성
         self.mainF = tk.Frame(self)
         self.adminF = tk.Frame(self)
+        self.adminmodeF = tk.Frame(self)
         self.userF = tk.Frame(self)
         self.accF = tk.Frame(self)
-        self.adminmodeF = tk.Frame(self)
+        self.logF = tk.Frame(self)
+        self.homeF = tk.Frame(self)
+        self.userinfoF = tk.Frame(self)
         
         # 메인화면 출력
         
@@ -22,33 +27,121 @@ class Homepage(tk.Tk):
 
         # 관리자화면 위젯
         self.adminLabel = Label(self.adminF, text="관리자 비밀번호를 입력하세요.")
-        self.adminEntry = Entry(self)
+        self.adminEntry = Entry(self.adminF)
         self.adminBtn = Button(self.adminF, text="로그인", command=self.AdminLogin)
 
         # 사용자화면 위젯
         self.userLabel = Label(self.userF, text="사용자 화면 입니다.")
         self.userBtn1 = Button(self.userF, text="회원가입", command=self.show_accF)
-        self.userBtn2 = Button(self.userF, text="로그인", command=self.UserLogin)
+        self.userBtn2 = Button(self.userF, text="로그인", command=self.show_userlogF)
 
         # 회원가입화면 위젯
         self.accLabel = Label(self.accF, text="회원가입 화면 입니다.")
-        self.accName = Entry(self)
-        self.accId = Entry(self)
-        self.accPass = Entry(self)
+        self.accName = Entry(self.accF)
+        self.accId = Entry(self.accF)
+        self.accPass = Entry(self.accF)
         self.accBtn = Button(self.accF, text="회원가입", command=self.UserAcc)
 
         # 로그인화면 위젯
+        self.logLabel = Label(self.logF, text="로그인 화면 입니다.")
+        self.logId = Entry(self.logF)
+        self.logPass = Entry(self.logF)
+        self.logBtn = Button(self.logF, text="로그인", command=self.UserLogin)
 
+        # 홈페이지화면 위젯
+        self.homeLabel = Label(self.homeF, text="홈페이지 입니다.")
+        self.homeBtn = Button(self.homeF, text="개인정보", command=self.show_userinfoF)
+        self.homeBtn2 = Button(self.homeF, text="유저리스트")
+        self.homeBtn3 = Button(self.homeF, text="자유게시판")
+        self.homeBtn4 = Button(self.homeF, text="탈퇴")
+        self.homeBtn5 = Button(self.homeF, text="뒤로가기", command=lambda: self.BackButton(self.homeBtn5))
+
+        # 개인정보화면 위젯
+        self.userinfoLabel = Label(self.userinfoF, text="개인정보 화면 입니다.")
+        self.userinfoLabel2 = Label(self.userinfoF)
+        self.userinfoBtn = Button(self.userinfoF, text="뒤로가기", command=lambda: self.BackButton(self.userinfoBtn))
+
+    # pack
+
+    def pack_adminF(self):
+        self.adminLabel.pack(pady=20)
+        self.adminEntry.pack()
+        self.adminBtn.pack()
         
+    def pack_userF(self):
+        self.userLabel.pack(pady=20)
+        self.userBtn1.pack()
+        self.userBtn2.pack()
 
+    def pack_accF(self):
+        self.accLabel.pack()
+        self.accName.pack()
+        self.accId.pack()
+        self.accPass.pack()
+        self.accBtn.pack()
 
+    def pack_userlogF(self):
+        self.logLabel.pack()
+        self.logId.pack()
+        self.logPass.pack()
+        self.logBtn.pack()
 
-        
-    def initWindow(self):
+    def pack_homeF(self):
+        self.homeLabel.pack()
+        self.homeBtn.pack()
+        self.homeBtn2.pack()
+        self.homeBtn3.pack()
+        self.homeBtn4.pack()
+        self.homeBtn5.pack()
+
+    def pack_userinfoF(self):
+        self.userinfoLabel.pack()
+        self.userinfoLabel2.pack()
+        self.userinfoBtn.pack()
+
+    # show Frame
+
+    def show_mainF(self):
+        self.adminF.pack_forget()
+        self.userF.pack_forget()
         self.mainF.pack()
-        Label(self.mainF, text="모드를 선택하세요.").pack(pady=20)
-        Button(self.mainF, text="관리자", command=self.show_adminF).pack()
-        Button(self.mainF, text="사용자", command=self.show_userF).pack()
+
+    def show_adminF(self):
+        self.mainF.pack_forget()
+        self.adminF.pack()
+        self.pack_adminF()
+
+    def show_adminmodeF(self, password):
+        self.adminF.pack_forget()
+        self.adminmodeF.pack()
+
+    def show_userF(self):
+        self.mainF.pack_forget()
+        self.userF.pack()
+        self.pack_userF()
+
+    def show_accF(self):
+        self.userF.pack_forget()
+        self.accF.pack()
+        self.pack_accF()
+
+    def show_userlogF(self):
+        self.userF.pack_forget()
+        self.logF.pack()
+        self.pack_userlogF()
+
+    def show_homeF(self):
+        self.logF.pack_forget()
+        self.userinfoF.pack_forget()
+        self.homeF.pack()
+        self.pack_homeF()
+
+    def show_userinfoF(self):
+        self.homeF.pack_forget()
+        self.userinfoF.pack()
+        self.pack_userinfoF()
+
+    # 코드
 
     def AdminLogin(self):
         password = self.adminEntry.get()
@@ -76,56 +169,33 @@ class Homepage(tk.Tk):
         else:
             showerror('위젯', '다시 입력 해주세요.')             
 
-
-
     def UserLogin(self):
-        pass
+        id = self.logId.get()
+        password = self.logPass.get()
 
-
-    # pack
-
-    def pack_adminF(self):
-        self.adminLabel.pack(pady=20)
-        self.adminEntry.pack()
-        self.adminBtn.pack()
+        user = w.UserLogin(id, password)
+        self.curr_user = user
         
-    def pack_userF(self):
-        self.userLabel.pack(pady=20)
-        self.userBtn1.pack()
-        self.userBtn2.pack()
+        if user == "error":
+            showerror('위젯', '다시 입력 해주세요.')
+        else:
+            showinfo('위젯', f'{user}님, 환영합니다!')
+            self.show_homeF()
 
-    def pack_accF(self):
-        self.accLabel.pack()
-        self.accName.pack()
-        self.accId.pack()
-        self.accPass.pack()
-        self.accBtn.pack()
+    def BackButton(self, button):
+        if button == self.homeBtn5:
+            self.homeF.pack_forget()
+            self.show_userlogF()
+        elif button == self.userinfoBtn:
+            self.userinfoF.pack_forget()
+            self.show_homeF()
 
-    def show_mainF(self):
-        self.adminF.pack_forget()
-        self.userF.pack_forget()
+           
+    def initWindow(self):
         self.mainF.pack()
-
-    # show Frame
-
-    def show_adminF(self):
-        self.mainF.pack_forget()
-        self.adminF.pack()
-        self.pack_adminF()
-
-    def show_userF(self):
-        self.mainF.pack_forget()
-        self.userF.pack()
-        self.pack_userF()
-
-    def show_accF(self):
-        self.userF.pack_forget()
-        self.accF.pack()
-        self.pack_accF()
-
-    def show_adminmodeF(self, password):
-        self.adminF.pack_forget()
-        self.adminmodeF.pack()
+        Label(self.mainF, text="모드를 선택하세요.").pack(pady=20)
+        Button(self.mainF, text="관리자", command=self.show_adminF).pack()
+        Button(self.mainF, text="사용자", command=self.show_userF).pack()
 
 if __name__=="__main__":
     homepage = Homepage()

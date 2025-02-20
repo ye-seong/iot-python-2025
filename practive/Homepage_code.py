@@ -109,4 +109,14 @@ def UserAccount(name, id, password):
     else:
         return "empty_error"
         
-    
+def UserLogin(id, password):
+    for user in user_list:
+        if user.id == id and user.password == password:
+            return user.name
+        else:
+            return "error"
+
+def GetUserInfo(name):
+    for user in user_list:
+        if user.name == name:
+            return f"이름 : {name}\n아이디 : {user.id}\n비밀번호 : {user.password}"
