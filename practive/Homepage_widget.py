@@ -20,6 +20,8 @@ class Homepage(tk.Tk):
         self.logF = tk.Frame(self)
         self.homeF = tk.Frame(self)
         self.userinfoF = tk.Frame(self)
+        self.userlistF = tk.Frame(self)
+        self.postlistF = tk.Frame(self)
         
         # 메인화면 출력
         
@@ -41,6 +43,7 @@ class Homepage(tk.Tk):
         self.accId = Entry(self.accF)
         self.accPass = Entry(self.accF)
         self.accBtn = Button(self.accF, text="회원가입", command=self.UserAcc)
+        self.accBtn2 = Button(self.accF, text="뒤로가기", command=self.show_userF)
 
         # 로그인화면 위젯
         self.logLabel = Label(self.logF, text="로그인 화면 입니다.")
@@ -51,7 +54,7 @@ class Homepage(tk.Tk):
         # 홈페이지화면 위젯
         self.homeLabel = Label(self.homeF, text="홈페이지 입니다.")
         self.homeBtn = Button(self.homeF, text="개인정보", command=self.show_userinfoF)
-        self.homeBtn2 = Button(self.homeF, text="유저리스트")
+        self.homeBtn2 = Button(self.homeF, text="유저리스트", command=self.show_userlistF)
         self.homeBtn3 = Button(self.homeF, text="자유게시판")
         self.homeBtn4 = Button(self.homeF, text="탈퇴")
         self.homeBtn5 = Button(self.homeF, text="뒤로가기", command=lambda: self.BackButton(self.homeBtn5))
@@ -61,6 +64,15 @@ class Homepage(tk.Tk):
         self.userinfoLabel2 = Label(self.userinfoF)
         self.userinfoBtn = Button(self.userinfoF, text="뒤로가기", command=lambda: self.BackButton(self.userinfoBtn))
 
+        # 유저리스트 위젯
+        self.userlistLabel = Label(self.userlistF, text="유저리스트 화면 입니다.")
+        self.userlistLabel2 = Label(self.userlistF)
+        self.userlistBtn = Button(self.userlistF, text="뒤로가기", command=lambda: self.BackButton(self.userlistBtn))
+
+        # 자유게시판 위젯
+        self.postlistLabel = Label(self.postlistF, text="자유게시판 화면 입니다.")
+      
+        
     # pack
 
     def pack_adminF(self):
@@ -79,6 +91,7 @@ class Homepage(tk.Tk):
         self.accId.pack()
         self.accPass.pack()
         self.accBtn.pack()
+        self.accBtn2.pack()
 
     def pack_userlogF(self):
         self.logLabel.pack()
@@ -96,8 +109,20 @@ class Homepage(tk.Tk):
 
     def pack_userinfoF(self):
         self.userinfoLabel.pack()
+        info = w.GetUserInfo(self.curr_user)
+        self.userinfoLabel2.config(text=info)
         self.userinfoLabel2.pack()
         self.userinfoBtn.pack()
+
+    def pack_userlistF(self):
+        self.userlistLabel.pack()
+        users = w.GetUserList()
+        self.userlistLabel2.config(text=users)
+        self.userlistLabel2.pack()
+        self.userlistBtn.pack()
+
+    def pack_postlistF(self):
+        self.postlistLabel.pack()
 
     # show Frame
 
@@ -117,6 +142,7 @@ class Homepage(tk.Tk):
 
     def show_userF(self):
         self.mainF.pack_forget()
+        self.accF.pack_forget()
         self.userF.pack()
         self.pack_userF()
 
@@ -141,6 +167,17 @@ class Homepage(tk.Tk):
         self.userinfoF.pack()
         self.pack_userinfoF()
 
+    def show_userlistF(self):
+        self.homeF.pack_forget()
+        self.userlistF.pack()
+        self.pack_userlistF()
+
+    def show_postlistF(self):
+        self.homeF.pack_forget()
+        self.postlistF.pack()
+        self.pack_postlistF()
+        self.PostList()
+
     # 코드
 
     def AdminLogin(self):
@@ -161,7 +198,11 @@ class Homepage(tk.Tk):
         result = w.UserAccount(name, id, password)
 
         if result == "success":
-            showinfo('위젯', '회원가입이 완료 되었습니다.')            
+            showinfo('위젯', '회원가입이 완료 되었습니다.')  
+            self.accName.delete(0, tk.END)
+            self.accId.delete(0, tk.END)
+            self.accPass.delete(0, tk.END)
+            self.show_userF()  
         elif result == "name_error":
             showerror('위젯', '같은 이름이 있습니다.')
         elif result == "id_error":
@@ -189,8 +230,14 @@ class Homepage(tk.Tk):
         elif button == self.userinfoBtn:
             self.userinfoF.pack_forget()
             self.show_homeF()
+        elif button == self.userlistBtn:
+            self.userlistF.pack_forget()
+            self.show_homeF()
 
-           
+    def PostList(self):
+        for post in w.post_list:
+            print(post)
+
     def initWindow(self):
         self.mainF.pack()
         Label(self.mainF, text="모드를 선택하세요.").pack(pady=20)
@@ -200,6 +247,7 @@ class Homepage(tk.Tk):
 if __name__=="__main__":
     homepage = Homepage()
     w.LoadUserFromDB(w.user_list)
+    w.LoadPostFromDB(w.post_list)
     homepage.mainloop()
 
 

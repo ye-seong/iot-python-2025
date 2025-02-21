@@ -120,3 +120,10 @@ def GetUserInfo(name):
     for user in user_list:
         if user.name == name:
             return f"이름 : {name}\n아이디 : {user.id}\n비밀번호 : {user.password}"
+
+def GetUserList():
+    users = ''
+    for user in user_list:
+        users = f'{users}\n{user.name}'
+    return users
+    
